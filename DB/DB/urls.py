@@ -20,4 +20,8 @@ import sql.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', sql.views.select, name="select"),
+    path('insert', sql.views.insert, name="insert"),
+    path('update', sql.views.update, name="update"),
+    path('delete', sql.views.delete, name="delete"),
+    path('create', sql.views.create, name="create"),
 ]

@@ -10,16 +10,39 @@ def sqlExcuter(sql):
         result = cursor.execute(sql)
         datas = cursor.fetchall()
 
+        if len(datas)<1 :
+            cursor.execute("select * from tmp")
+            datas = cursor.fetchall()
+
         connection.commit()
         connection.close()
         return datas
-    except:
+    except Exception as ex:
         connection.rollback()
-        print("Fail to sql, the string is" + sql)
-        return datas
+        return ("Fail to sql, the string is" + sql + "error: " + str(ex))
 
+
+def create(request):
+    mysql = "CREATE TABLE tmp2 (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(50),age INT);"
+    result = sqlExcuter(mysql)
+    return HttpResponse(result)
 
 def select(request):
-    mysql = "select * from tmp"
-    sqlExcuter(mysql)
-    return HttpResponse("Fail")
+    mysql = "select * from tmp;"
+    result = sqlExcuter(mysql)
+    return HttpResponse(result)
+
+def insert(request):
+    mysql = " INSERT INTO tmp(ID, Name, age) VALUES(2, 'KUD2', '3'); "
+    result = sqlExcuter(mysql)
+    return HttpResponse(result)
+
+def update(request):
+    mysql = "UPDATE tmp SET age = 2002 WHERE id = 1;"
+    result = sqlExcuter(mysql)
+    return HttpResponse(result)
+
+def delete(request):
+    mysql = " DELETE FROM tmp WHERE Name = 1;"
+    result = sqlExcuter(mysql)
+    return HttpResponse(result)
