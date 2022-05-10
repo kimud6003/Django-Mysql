@@ -22,8 +22,8 @@ def sqlExcuter(sql):
         return ("Fail to sql, the string is" + sql + "error: " + str(ex))
 
 
-def create(request):
-    mysql = "CREATE TABLE tmp2 (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(50),age INT);"
+def table(request):
+    mysql = "CREATE TABLE tmp (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(50),age INT);"
     result = sqlExcuter(mysql)
     return HttpResponse(result)
 

@@ -1,5 +1,123 @@
 # Django에서 SQL 사용기
 
+## ORM 세팅
+
+- 앞서 `Figma`를 통해 `REST API`에 대해 어느정도 설명을 드렸다고 생각합니다.
+
+- `Django`에서 `REST API`를 다루기 쉽게 하기 위한 라이브러리인 `Django REST framework` 를 설치해볼 시간입니다.
+
+```console
+pip install djangorestframework
+pip install markdown       # Markdown support for the browsable API.
+pip install django-filter  # Filtering support
+```
+
+- 그리고 해당 라이브러리를 `settings.py`에서 추가해주도록 하겠습니다.
+
+```py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+]
+
+```
+
+- `REST API`를 테스트하기 위해 `Calculator`라는 `App`을 만들도록 하겠습니다.
+
+```console
+python ./manage.py startapp Calculator
+```
+
+- `views.py`에서 `Calculator`라는 `API`를 구성해보도록 하겠습니다.
+
+- 구성 방법은 `FBV(함수기반뷰)`,`CBV(클래스기반뷰)` 두가지가 있습니다.
+
+- 먼저 `FBV`방식으로 `POST`를 통해 숫자를 받고 결과를 배출하는 수식을 만들어 보도록 하겠습니다.
+
+```py
+
+@api_view(['GET','POST']) # 
+def fun_calc_add(request):
+    if request.method == 'GET':
+        return Response("Add Get")
+
+    if request.method == 'POST':
+        num1 = request.data["num1"]
+        num2 = request.data["num2"]
+        return Response({"message": "Got some data!", "mathematical expression" : " %d + %d "%(num1,num2) ,"result": num1+num2})
+
+@api_view(['GET','POST'])
+def fun_calc_sub(request):
+    if request.method == 'GET':
+        return Response("Sub Get")
+    if request.method == 'POST':
+        num1 = request.data["num1"]
+        num2 = request.data["num2"]
+        return Response({"message": "Got some data!", "mathematical expression" : " %d - %d "%(num1,num2) ,"result": num1-num2})
+
+
+@api_view(['GET','POST'])
+def fun_calc_mul(request):
+    if request.method == 'GET':
+        return Response("Mul Get")
+    if request.method == 'POST':
+        num1 = request.data["num1"]
+        num2 = request.data["num2"]
+        return Response({"message": "Got some data!", "mathematical expression" : " %d * %d "%(num1,num2) ,"result": num1*num2})
+
+@api_view(['GET','POST'])
+def fun_calc_div(request):
+    if request.method == 'GET':
+        return Response("Div Get")
+    if request.method == 'POST':
+        num1 = request.data["num1"]
+        num2 = request.data["num2"]
+        return Response({"message": "Got some data!", "mathematical expression" : " %d / %d "%(num1,num2) ,"result": num1/num2})
+```
+
+- 먼저 `CBV`방식으로 `POST`를 통해 숫자를 받고 결과를 배출하는 수식을 만들어 보도록 하겠습니다.
+
+```py
+
+class class_add(APIView):
+    def get(self, request):
+        return Response("Add Get")
+    def post(self, request):
+        num1 = request.data["num1"]
+        num2 = request.data["num2"]
+        return Response({"message": "Got some data!", "mathematical expression" : " %d + %d "%(num1,num2) ,"result": num1+num2})
+      
+class class_sub(APIView):
+    def get(self, request):
+        return Response("Sub Get")
+    def post(self, request):
+        num1 = request.data["num1"]
+        num2 = request.data["num2"]
+        return Response({"message": "Got some data!", "mathematical expression" : " %d - %d "%(num1,num2) ,"result": num1-num2})
+    
+class class_mul(APIView):
+    def get(self, request):
+        return Response("Mul Get")
+    def post(self, request):
+        num1 = request.data["num1"]
+        num2 = request.data["num2"]
+        return Response({"message": "Got some data!", "mathematical expression" : " %d * %d "%(num1,num2) ,"result": num1*num2})
+      
+class class_div(APIView):
+    def get(self, request):
+        return Response("div Get")
+    def post(self, request):
+        num1 = request.data["num1"]
+        num2 = request.data["num2"]
+        return Response({"message": "Got some data!", "mathematical expression" : " %d / %d "%(num1,num2) ,"result": num1/num2})
+
+```
+
 ## sql 프로젝트 세팅
 
 - `DataBase`의 `sql`을 만져보기 위해 `Django`의 프로젝트를 다시 생성 해보도록 하겠습니다.
@@ -95,11 +213,11 @@ SECRET_KEY = 'django-insecure-r-9u+%7ln=dl78q90xx+lkw0c1vlajxi*h^8n7j)!9p6k2&dh%
 
 ```py
 # settings.py
-import mysql_setting
+import mysql
 
-SECRET_KEY = mysql_setting.SECRET_KEY # 기존에 있던 SECRET_KEY를 분리
+SECRET_KEY = mysql.SECRET_KEY # 기존에 있던 SECRET_KEY를 분리
 
-DATABASES = mysql_setting.DATABASES  # 기존에 있던 DATABASES를 mysql_setting에 SECRET_KEY
+DATABASES = mysql.DATABASES  # 기존에 있던 DATABASES를 mysql_setting에 SECRET_KEY
 
 ```
 
