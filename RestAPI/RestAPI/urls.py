@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from orm.views import article_list,article_detail,ArticleAPIView,ArticleDetails
 import Calculator.views
 import sql.views
 
@@ -39,4 +40,14 @@ urlpatterns = [
     path('cls_sub/', Calculator.views.class_sub.as_view()),
     path('cls_mul/', Calculator.views.class_mul.as_view()),
     path('cls_div/', Calculator.views.class_div.as_view()),
+    
+    # ORM
+    path('article/', article_list),
+    path('detail/<int:pk>/', article_detail),
+    
+    # CLS ORM
+    path('cls_article/', ArticleAPIView.as_view()),
+    path('cls_detail/<int:id>/', ArticleDetails.as_view()),
+
 ]
+
